@@ -50,7 +50,7 @@
                 <div class="control-group">
                     <label class="control-label">Departamento:</label>
                     <div class="controls">
-                        <input size="50" class="form-control" name="departamento" type="text" placeholder="Departamento" required="" value="<?php echo !empty($departamento)?$departamento: '';?>">
+                        <input size="50" class="form-control" name="nome" type="text" placeholder="Departamento" required="" value="<?php echo !empty($nome)?$nome: '';?>">
                     </div>
                 </div>
                 <div class="form-actions">
@@ -60,7 +60,10 @@
                     <a href="usuarios.php" type="btn" class="btn btn-default">Voltar</a>
 
                 </div>
+                </div>
             </form>
+            </div>
+            </div>
              
     </div>
      
@@ -77,3 +80,20 @@
     <script src="js/script.js"></script>
   </body>
   </html>
+<?php 
+    $nome = $_POST["nome"];
+
+  
+    include_once 'banco2.php';    
+      
+    $sql = "insert into departamento values(null,
+            '".$nome."')";
+    //echo $sql;
+      
+    if(mysql_query($sql,$con)){
+        $msg = "Gravado com sucesso!";
+    }else{
+        $msg = "Erro ao gravar!";
+    }
+    mysql_close($con);    
+?>

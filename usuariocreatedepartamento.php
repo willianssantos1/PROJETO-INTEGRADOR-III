@@ -33,9 +33,7 @@
       </nav>
       <figure id="topo" class="container-fluid"></figure>
     </header>
- 
     <div class="container">
-
     <div class="container">
     <div class="span10 offset1">
                   <div class="card">
@@ -43,29 +41,31 @@
                     <h3 class="well">Cadastro de Departamento:</h3>
                 </div>
                 <div class="card-body">
-            <form class="form-horizontal" action="usuariocreatedepartamento.php" method="post">
-
-                <div class="control-group">
+            <form class="form-horizontal" action="usuariocreatedepartamento.php"  method="post">
+            <div class="control-group <?php echo !empty($nomeErro)?'error ' : '';?>">
                     <label class="control-label">Departamento:</label>
                     <div class="controls">
-                        <input size="50" class="form-control" name="departamento" type="text" placeholder="Departamento" required="" value="<?php echo !empty($departamento)?$departamento: '';?>">
+                        <input size="50" class="form-control" name="nome" type="text" placeholder="Nome" required="" value="<?php echo !empty($nome)?$nome: '';?>">
+                        <?php if(!empty($nomeErro)): ?>
+                            <span class="help-inline"><?php echo $nomeErro;?></span>
+                            <?php endif;?>
                     </div>
                 </div>
                 <div class="form-actions">
                     <br/>
-
                     <button type="submit" class="btn btn-success">Adicionar</button>
                     <a href="usuario.php" type="btn" class="btn btn-default">Voltar</a>
-
                 </div>
             </form>
-             
+            </div>
+            </div>
+            </div> 
+        </div>
     </div>
-</div>
-     
-      <div class="footer" >
+       <div class="footer" >
         <p> © Copyright 2020 TIckets</p>
       </div>
+
     </main>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -76,3 +76,36 @@
     <script src="js/script.js"></script>
   </body>
   </html>
+  <?php
+    require 'banco2.php';
+    if(!empty($_POST))
+    {
+        //Acompanha os erros de validação
+        $nomeErro = null;
+        
+        $nome = $_POST['nome'];
+        
+        //Validaçao dos campos:
+        $validacao = true;
+        if(empty($nome))
+        {
+            $nomeErro = 'Por favor digite o seu nome!';
+            $validacao = false;
+        }
+
+        //Inserindo no Banco:
+        if($validacao)
+        {
+            $pdo = Banco::conectar();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "INSERT INTO departamento (nome) VALUES(?)";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($nome));
+            Banco::desconectar();
+           
+        }
+    }
+      
+    
+    
+?>
